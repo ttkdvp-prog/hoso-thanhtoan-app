@@ -1,0 +1,169 @@
+:root {
+  --primary-color: #0056b3;
+  --text-color: #333;
+  --bg-color: #f4f7f6;
+  --page-width: 210mm;
+  --page-height: 297mm;
+}
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  font-size: 14pt;
+  line-height: 1.5;
+}
+
+/* Print Container - Hiển thị như 1 tờ giấy trên màn hình */
+.a4-page {
+  width: var(--page-width);
+  min-height: var(--page-height);
+  padding: 20mm 20mm 20mm 30mm; /* Chuẩn văn bản: Trên 2, Dưới 2, Trái 3, Phải 2 */
+  margin: 10mm auto;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Các lớp tiện ích chung */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+.bold { font-weight: bold; }
+.italic { font-style: italic; }
+.uppercase { text-transform: uppercase; }
+
+.mt-1 { margin-top: 10px; }
+.mt-2 { margin-top: 20px; }
+.mt-3 { margin-top: 30px; }
+.mb-1 { margin-bottom: 10px; }
+.mb-2 { margin-bottom: 20px; }
+.mb-3 { margin-bottom: 30px; }
+
+/* Cấu trúc Header Quốc hiệu & Tiêu ngữ */
+.quoc-hieu {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.quoc-hieu-trai {
+  flex: 1;
+  text-align: center;
+}
+.quoc-hieu-phai {
+  flex: 1;
+  text-align: center;
+}
+.duong-ke {
+  width: 100px;
+  border-top: 1px solid black;
+  margin: 5px auto;
+}
+
+/* Cấu trúc Tiêu đề văn bản */
+.tieu-de-van-ban {
+  text-align: center;
+  margin: 30px 0;
+}
+.tieu-de-van-ban h2 {
+  font-size: 16pt;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Các trường dữ liệu động */
+span[data-field] {
+  font-weight: bold;
+}
+
+/* Nút bấm điều khiển (Sẽ bị ẩn khi in) */
+.controls {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.btn {
+  padding: 10px 20px;
+  margin: 0 5px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+.btn:hover {
+  background-color: #004494;
+}
+
+/* Bảng biểu */
+table.bang-bieu {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+table.bang-bieu th, table.bang-bieu td {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+/* Chữ ký */
+.chu-ky {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+.chu-ky-item {
+  flex: 1;
+  text-align: center;
+}
+.chu-ky-item .chuc-danh {
+  font-weight: bold;
+}
+.chu-ky-item .ky-ten {
+  font-style: italic;
+  font-size: 11pt;
+  margin-bottom: 80px; /* Khoảng trống để ký */
+}
+
+/* ======== THIẾT LẬP KHI IN (PRINT MEDIA) ======== */
+@media print {
+  body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+  }
+  .controls {
+    display: none !important; /* Ẩn nút điều khiển khi in */
+  }
+  .a4-page {
+    margin: 0;
+    box-shadow: none;
+    width: auto;
+    min-height: auto;
+    /* Xóa bỏ padding vì máy in tự tạo margin nếu cài đặt page setup. 
+       Tuy nhiên ở đây ta dùng @page margin để đảm bảo chuẩn. */
+    padding: 0; 
+  }
+  @page {
+    size: A4;
+    margin: 20mm 20mm 20mm 30mm;
+  }
+  
+  /* Hỗ trợ ngắt trang */
+  .page-break-before {
+    page-break-before: always;
+  }
+  .avoid-page-break {
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Thanh Toán</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* CSS tuỳ chỉnh thêm cho mẫu văn bản cụ thể này */
+        .text-indent { text-indent: 1.27cm; }
+        .table-danh-muc th, .table-danh-muc td { border: 1px solid #000; padding: 5px; text-align: center; }
+        .table-danh-muc td:nth-child(2) { text-align: left; }
+    </style>
+</head>
+<body>
+
+    <!-- Thanh điều khiển hiển thị trên web, ẩn khi in -->
+    <div class="controls" id="controls-bar">
+        <h2>Hệ thống In Hồ Sơ Tự Động</h2>
+        <p>Mã Hồ sơ: <span data-field="ID_HoSo" style="color: blue;"></span></p>
+        <button class="btn" onclick="window.print()">🖨️ In Hồ Sơ</button>
+        <button class="btn" onclick="exportPDF()">📄 Xuất PDF</button>
+        <button class="btn" onclick="exportDOCX()">📝 Xuất DOCX</button>
+    </div>
+
+    <div id="document-container">
+
+        <!-- ================= TRANG 1: GIẤY ĐỀ NGHỊ THANH TOÁN ================= -->
+        <div class="a4-page">
+            <div class="quoc-hieu">
+                <div class="quoc-hieu-trai">
+                    <div class="uppercase bold">VIỄN THÔNG PHÚ THỌ</div>
+                    <div class="bold">TRUNG TÂM HẠ TẦNG</div>
+                </div>
+                <div class="quoc-hieu-phai">
+                    <div class="bold uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                    <div class="bold">Độc lập - Tự do - Hạnh phúc</div>
+                    <div class="duong-ke" style="width: 150px;"></div>
+                    <div class="mt-1 italic text-right">Phú Thọ, ngày <span data-field="NgayDeNghi"></span></div>
+                </div>
+            </div>
+
+            <div class="tieu-de-van-ban">
+                <h2>GIẤY ĐỀ NGHỊ THANH TOÁN</h2>
+            </div>
+
+            <div class="noi-dung">
+                <p><strong>Kính gửi:</strong> Lãnh đạo Viễn thông Phú Thọ</p>
+                <p>Tên tôi là: <span class="bold">Bộ phận Quản lý Hợp đồng</span></p>
+                <p>Bộ phận: Tổ tổng hợp - Đơn vị: Trung tâm hạ tầng</p>
+                <p>Nội dung thanh toán: <span data-field="NoiDungToTrinh"></span></p>
+                
+                <table class="bang-bieu table-danh-muc">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Nội dung thanh toán</th>
+                            <th>Số tiền</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><span data-field="NoiDungToTrinh"></span> (HĐ: <span data-field="SoHopDong"></span>)</td>
+                            <td><span data-field="GiaTriSauThue"></span></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="bold">Cộng</td>
+                            <td class="bold"><span data-field="GiaTriSauThue"></span></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="mt-1">Số tiền bằng chữ: <i data-field="BangChu"></i>./.</p>
+                <p>Hình thức thanh toán: chuyển khoản</p>
+                <p>Đơn vị thụ hưởng: <span class="bold" data-field="KhachHang.Tên khách hàng"></span></p>
+                <p>Tài khoản thụ hưởng: <span class="bold" data-field="KhachHang.Số tài khoản"></span></p>
+                <p>Ngân hàng thụ hưởng: <span data-field="KhachHang.Tại Ngân hàng"></span></p>
+            </div>
+
+            <div class="chu-ky avoid-page-break">
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">Người đề nghị</div>
+                    <div class="ky-ten"></div>
+                </div>
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">Nhân viên kế toán</div>
+                    <div class="ky-ten"></div>
+                </div>
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">Giám đốc</div>
+                    <div class="ky-ten"></div>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <p class="bold">DUYỆT THANH TOÁN:</p>
+                <p>Số tiền bằng số: <span data-field="GiaTriSauThue"></span></p>
+                <p>Bằng chữ: <i data-field="BangChu"></i>./.</p>
+            </div>
+            <div class="chu-ky avoid-page-break" style="margin-top:20px;">
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">KẾ TOÁN TRƯỞNG</div>
+                    <div class="ky-ten"></div>
+                </div>
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">GIÁM ĐỐC VIỄN THÔNG PHÚ THỌ</div>
+                    <div class="ky-ten"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-break-before"></div>
+
+        <!-- ================= TRANG 2: HỢP ĐỒNG KINH TẾ ================= -->
+        <div class="a4-page">
+            <div class="quoc-hieu text-center">
+                <div class="bold uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                <div class="bold">Độc lập - Tự do - Hạnh phúc</div>
+                <div class="duong-ke" style="width: 200px;"></div>
+            </div>
+
+            <div class="tieu-de-van-ban" style="margin-top: 50px;">
+                <h2>HỢP ĐỒNG KINH TẾ</h2>
+                <p class="italic">Số: <span data-field="SoHopDong"></span></p>
+            </div>
+
+            <div class="noi-dung text-justify">
+                <p class="text-indent italic">Căn cứ Bộ Luật Dân Sự số 91/2015/QH13 do Quốc Hội Nước Cộng Hòa Xã Hội Chủ Nghĩa Việt Nam ban hành ngày 24/11/2015;</p>
+                <p class="text-indent italic">Căn cứ Luật Thương Mại được Quốc Hội nước Cộng Hoà Xã Hội Chủ Nghĩa Việt Nam thông qua ngày 14 tháng 6 năm 2005;</p>
+                <p class="text-indent italic">Căn cứ vào nhu cầu cụ thể và năng lực của hai bên tham gia Hợp đồng.</p>
+                <p class="text-indent">Hôm nay, ngày <span data-field="NgayKyHopDong"></span>, Chúng tôi gồm:</p>
+                
+                <p class="bold">BÊN A: VIỄN THÔNG PHÚ THỌ</p>
+                <p>Địa chỉ: Số 1468, đường Hùng Vương, phường Thanh Miếu, tỉnh Phú Thọ, Việt Nam</p>
+                <p>Điện thoại: 0210.3860.123 - Fax: 0210.3860.123</p>
+                <p>Mã số thuế: 2600102568</p>
+                <p>Đại diện là: Ông Lê Văn Đức - Chức vụ: Phó Giám đốc</p>
+
+                <p class="bold mt-2">BÊN B: <span class="uppercase" data-field="KhachHang.Tên khách hàng"></span></p>
+                <p>Địa chỉ: <span data-field="KhachHang.Địa chỉ"></span></p>
+                <p>Điện thoại: <span data-field="KhachHang.Số Điện thoại"></span></p>
+                <p>Mã số thuế: <span data-field="KhachHang.Mã số thuế"></span></p>
+                <p>Tài khoản số: <span data-field="KhachHang.Số tài khoản"></span> tại <span data-field="KhachHang.Tại Ngân hàng"></span></p>
+                <p>Đại diện: <span class="bold" data-field="KhachHang.Người đại diện"></span></p>
+
+                <p class="text-indent mt-2">Sau khi bàn bạc hai bên thống nhất ký kết hợp đồng kinh tế với những nội dung như sau:</p>
+                
+                <p class="bold uppercase">ĐIỀU 1: NỘI DUNG HỢP ĐỒNG</p>
+                <p>Bên A đồng ý mua, Bên B đồng ý cung cấp thiết bị/dịch vụ: <span data-field="NoiDungHopDong"></span>. Chi tiết cụ thể như sau:</p>
+
+                <table class="bang-bieu table-danh-muc">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên hàng hóa, dịch vụ</th>
+                            <th>ĐVT</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thuế GTGT</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody data-list="HangHoa">
+                        <tr data-template="true">
+                            <td>{STT}</td>
+                            <td>{TenHangHoa}</td>
+                            <td>{DonViTinh}</td>
+                            <td>{SoLuong}</td>
+                            <td>{DonGia}</td>
+                            <td>{TienThue}</td>
+                            <td>{ThanhTien}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" class="bold text-right">Cộng</td>
+                            <td class="bold"><span data-sum="ThanhTien"></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="bold text-right">Thuế VAT (<span data-field="ThueSuat"></span>)</td>
+                            <td class="bold"><span data-sum="TienThue"></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="bold text-right">Thành tiền</td>
+                            <td class="bold"><span data-sum="TongTien"></span></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p class="mt-1">Bằng chữ: <i data-field="BangChu"></i>./.</p>
+
+                <p class="bold uppercase mt-2">ĐIỀU 2: GIÁ TRỊ VÀ PHƯƠNG THỨC THANH TOÁN</p>
+                <p>2.1. Giá trị của Hợp đồng là <span data-field="GiaTriSauThue"></span> đồng.</p>
+                <p>2.2. Phương thức: Bên A thanh toán cho Bên B bằng chuyển khoản.</p>
+                <p>2.3. Tiến độ: Thanh toán 100% trong vòng 30 ngày kể từ ngày nhận đủ hồ sơ hợp lệ.</p>
+
+                <p class="bold uppercase mt-2">ĐIỀU 3: ĐIỀU KHOẢN CHUNG</p>
+                <p>Hợp đồng có hiệu lực từ ngày ký, lập thành 02 bản có giá trị pháp lý như nhau.</p>
+            </div>
+
+            <div class="chu-ky avoid-page-break">
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">ĐẠI DIỆN BÊN A</div>
+                    <div class="ky-ten"></div>
+                </div>
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">ĐẠI DIỆN BÊN B</div>
+                    <div class="ky-ten"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-break-before"></div>
+
+        <!-- ================= TRANG 3: BIÊN BẢN NGHIỆM THU / THANH LÝ ================= -->
+        <div class="a4-page">
+            <div class="quoc-hieu text-center">
+                <div class="bold uppercase">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+                <div class="bold">Độc lập - Tự do - Hạnh phúc</div>
+                <div class="duong-ke" style="width: 200px;"></div>
+                <div class="mt-1 italic text-right">Phú Thọ, ngày <span data-field="NgayThanhLy"></span></div>
+            </div>
+
+            <div class="tieu-de-van-ban" style="margin-top: 30px;">
+                <h2>BIÊN BẢN NGHIỆM THU & THANH LÝ HỢP ĐỒNG</h2>
+            </div>
+
+            <div class="noi-dung text-justify">
+                <p>Căn cứ Hợp đồng số: <span class="bold" data-field="SoHopDong"></span> ký ngày <span data-field="NgayKyHopDong"></span> giữa Viễn thông Phú Thọ và <span data-field="KhachHang.Tên khách hàng"></span>.</p>
+                <p>Hôm nay, ngày <span data-field="NgayThanhLy"></span> tại Viễn thông Phú Thọ, chúng tôi gồm:</p>
+                
+                <p class="bold">BÊN A: VIỄN THÔNG PHÚ THỌ</p>
+                <p>Đại diện: Ông Lê Văn Đức - Chức vụ: Phó Giám đốc</p>
+
+                <p class="bold mt-2">BÊN B: <span class="uppercase" data-field="KhachHang.Tên khách hàng"></span></p>
+                <p>Đại diện: <span class="bold" data-field="KhachHang.Người đại diện"></span></p>
+
+                <p class="bold mt-2">NỘI DUNG NGHIỆM THU VÀ THANH LÝ:</p>
+                <p>Hai bên xác nhận Bên B đã hoàn thành việc cung cấp đầy đủ dịch vụ/hàng hóa theo đúng hợp đồng. Bên A đồng ý nghiệm thu toàn bộ.</p>
+                
+                <p class="bold mt-2">Trách nhiệm thanh toán:</p>
+                <p>Bên A có trách nhiệm thanh toán cho Bên B số tiền là: <span class="bold" data-field="GiaTriSauThue"></span> VNĐ.</p>
+                <p>Bằng chữ: <i data-field="BangChu"></i>./.</p>
+
+                <p>Hai bên đồng ý thanh lý hợp đồng số <span data-field="SoHopDong"></span>. Biên bản được lập thành 02 bản, mỗi bên giữ 01 bản.</p>
+            </div>
+
+            <div class="chu-ky avoid-page-break mt-3">
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">ĐẠI DIỆN BÊN A</div>
+                    <div class="ky-ten"></div>
+                </div>
+                <div class="chu-ky-item">
+                    <div class="chuc-danh">ĐẠI DIỆN BÊN B</div>
+                    <div class="ky-ten"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Hàm xuất PDF sử dụng html2pdf
+        function exportPDF() {
+            const element = document.getElementById('document-container');
+            const fileName = 'HoSoThanhToan_' + (document.querySelector('[data-field="ID_HoSo"]').innerText || 'New') + '.pdf';
+            
+            const opt = {
+                margin:       0,
+                filename:     fileName,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            const pages = document.querySelectorAll('.a4-page');
+            pages.forEach(p => {
+                p.style.boxShadow = 'none';
+                p.style.margin = '0';
+            });
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                pages.forEach(p => {
+                    p.style.boxShadow = '';
+                    p.style.margin = '';
+                });
+            });
+        }
+
+        // Hàm xuất DOCX từ HTML
+        function exportDOCX() {
+            const fileName = 'HoSoThanhToan_' + (document.querySelector('[data-field="ID_HoSo"]').innerText || 'New') + '.doc';
+            const element = document.getElementById('document-container');
+            
+            // Thêm style cơ bản để giữ định dạng khi vào Word
+            const style = `
+                <style>
+                    body { font-family: 'Times New Roman', serif; font-size: 14pt; }
+                    .text-indent { text-indent: 1.27cm; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid black; padding: 5px; text-align: left; }
+                    .text-center { text-align: center; }
+                    .bold { font-weight: bold; }
+                    .uppercase { text-transform: uppercase; }
+                    .page-break-before { page-break-before: always; }
+                </style>
+            `;
+            
+            const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'>" + style + "</head><body>";
+            const footer = "</body></html>";
+            const sourceHTML = header + element.innerHTML + footer;
+            
+            const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+            const fileDownload = document.createElement("a");
+            document.body.appendChild(fileDownload);
+            fileDownload.href = source;
+            fileDownload.download = fileName;
+            fileDownload.click();
+            document.body.removeChild(fileDownload);
+        }
+    </script>
+</body>
+</html>
