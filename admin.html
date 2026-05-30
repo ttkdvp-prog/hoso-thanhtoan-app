@@ -131,6 +131,9 @@
 
     /* ------------- api ------------- */
     async function api(action, payload={}, method="GET") {
+      if (!CONFIG.url || CONFIG.url === "PASTE_WEB_APP_URL_HERE") {
+          throw new Error("CHƯA CẤU HÌNH API! Bạn cần dán đường link Google Apps Script vào dòng số 111 của file admin.html");
+      }
       const body = { action, table: CONFIG.table, apiKey: CONFIG.key, ...payload };
       let res;
       if (method === "GET") {
