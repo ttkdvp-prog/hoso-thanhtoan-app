@@ -17,7 +17,7 @@
             margin: 0;
             padding: 0;
         }
-        table {
+        table { page-break-inside: avoid; break-inside: avoid; 
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 10pt;
@@ -36,7 +36,7 @@
             margin: 10pt 0 5pt 0;
         }
         .page-break {
-            page-break-after: always;
+            page-break-before: always; break-before: page; height: 1px;
         }
         /* Tắt viền bảng đối với các bảng dùng để dàn layout (chữ ký, tiêu đề) */
         table.layout-table, table.layout-table td {
