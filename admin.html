@@ -117,7 +117,7 @@
       { key:"ID_HoSo", header:"Mã HS", w:"100px" },
       { key:"NgayTao", header:"Ngày tạo", w:"100px" },
       { key:"ID_KhachHang", header:"Mã Khách hàng", clamp:1, w:"120px" },
-      { key:"NoiDungToTrinh", header:"Nội dung", clamp:2, w:"minmax(200px,2fr)" },
+      { key:"NoiDungToTrinh", header:"Nội dung", clamp:2, w:"300px" },
       { key:"GiaTriSauThue", header:"Tổng tiền", align:"right", w:"140px" },
       { key:"TrangThai", header:"Trạng thái", format:"badge", w:"120px" },
     ];
@@ -245,10 +245,13 @@
 
     function openOverlay(row, mode) {
       const root = document.getElementById("overlay");
-      const fields = COLUMNS.map(c => mode === "edit"
-        ? `<label><span>${c.header}</span><input data-key="${c.key}" value="${row[c.key] ?? ""}" type="${c.format==='price'?'number':'text'}" /></label>`
-        : `<label><span>${c.header}</span><div>${fmt.cell(c, row[c.key]) || "—"}</div></label>`
-      ).join("");
+      const allKeys = Object.keys(row).filter(k => k !== "id" && k !== "deleted" && typeof row[k] !== "object");
+      const fields = allKeys.map(k => {
+        const c = COLUMNS.find(col => col.key === k) || { header: k, key: k, format: "text" };
+        return mode === "edit"
+          ? `<label><span>${c.header}</span><input data-key="${k}" value="${row[k] ?? ""}" type="${c.format==='price'?'number':'text'}" /></label>`
+          : `<label><span>${c.header}</span><div style="font-weight: 500">${fmt.cell(c, row[k]) || "—"}</div></label>`;
+      }).join("");
       root.innerHTML = `<div class="overlay">
         <div class="scrim"></div>
         <div class="panel" role="dialog" aria-modal="true">
