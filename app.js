@@ -67,7 +67,7 @@ async function fetchHoSoData() {
 
   // --- KẾT NỐI API THỰC TẾ ---
   // Dán đường link Web App URL của Google Apps Script vào biến này:
-  const GOOGLE_SCRIPT_API_URL = ""; 
+  const GOOGLE_SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbwzPGEp-QZJk-puwLV_Xg9Dg6CvYIIJU2K3lh-DTVJrT_z4GFrdtuyXavyXhK-q4ZB_/exec"; 
   
   if (GOOGLE_SCRIPT_API_URL !== "") {
       try {
