@@ -205,9 +205,10 @@
           const cls = c.clamp ? `class="clamp" style="-webkit-line-clamp:${c.clamp}"` : "";
           return `<td style="text-align:${c.align||"left"}"><div ${cls}>${body}</div></td>`;
         }).join("");
-        return `<tr data-id="${row.ID_HoSo}">${cells}<td class="right">
+        return `<tr data-id="${row.ID_HoSo}">${cells}<td class="right" style="white-space:nowrap;">
           <button class="btn primary" data-act="print">🖨️ In</button>
-          <button class="btn" data-act="view">Xem</button>
+          <button class="btn" data-act="view">Sửa</button>
+          <button class="btn danger" data-act="del">Xóa</button>
         </td></tr>`;
       }).join("");
       document.querySelectorAll("tbody tr").forEach(tr => {
@@ -216,6 +217,8 @@
         if (!row) return;
         tr.querySelector('[data-act="view"]').addEventListener("click", e => { e.stopPropagation(); openOverlay(row, "view"); });
         tr.querySelector('[data-act="print"]').addEventListener("click", e => { e.stopPropagation(); window.open(`index.html?id=${row.ID_HoSo}`, '_blank'); });
+        const delBtn = tr.querySelector('[data-act="del"]');
+        if (delBtn) delBtn.addEventListener("click", e => { e.stopPropagation(); confirmDelete(row); });
         tr.addEventListener("click", () => openOverlay(row, "view"));
       });
 
@@ -273,18 +276,24 @@
         root.querySelectorAll("input[data-key]").forEach(i => { patch[i.dataset.key] = i.type === "number" ? Number(i.value) : i.value; });
         try {
           setStatus("saving");
-          const r = await api("update", { id: row.id, data: patch }, "POST");
+          const r = await api("update", { id: row.ID_HoSo, data: patch }, "POST");
           Object.assign(row, r.data);
           render();
           close();
-          showToast("Saved");
-        } catch (e) { showToast("Save failed: " + e.message); }
+          showToast("Đã lưu thành công");
+        } catch (e) { showToast("Lưu thất bại: " + e.message); }
       });
     }
 
     function confirmDelete(row) {
-      // Không hỗ trợ xóa trên dashboard, vui lòng xóa trên AppSheet
-      showToast("Vui lòng thực hiện thao tác xóa trên AppSheet.");
+      const snapshot = state.rows.slice();
+      state.rows = state.rows.filter(r => r.ID_HoSo !== row.ID_HoSo);
+      render();
+      const t = setTimeout(async () => {
+        try { await api("delete", { id: row.ID_HoSo }, "POST"); }
+        catch { state.rows = snapshot; render(); showToast("Xóa thất bại, đã khôi phục"); }
+      }, 5000);
+      showToast("Đã xóa " + (row.NoiDungToTrinh || row.ID_HoSo), { label:"Hoàn tác", onClick: () => { clearTimeout(t); state.rows = snapshot; render(); } }, 5000);
     }
 
     function showToast(msg, action, ms=3000) {

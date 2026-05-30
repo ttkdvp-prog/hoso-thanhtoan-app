@@ -9,6 +9,72 @@
  * 7. Nhấn Triển khai và copy đường link URL (Web App URL) cấp cho ứng dụng của chúng ta.
  */
 
+function doPost(e) {
+  var body = {};
+  try { 
+    body = JSON.parse(e.postData.contents); 
+  } catch(err) {}
+  
+  var action = body.action || (e.parameter && e.parameter.action);
+  var idHoSo = body.id || (e.parameter && e.parameter.id);
+  
+  if (!idHoSo || !action) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error", message: "Thiếu tham số ID hoặc action."
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheetHoSo = ss.getSheetByName("HoSoThanhToan");
+    
+    if (action === 'delete') {
+      var rowIndex = getRowIndexById(sheetHoSo, idHoSo);
+      if (rowIndex > -1) {
+        sheetHoSo.deleteRow(rowIndex);
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success", data: { id: idHoSo, deleted: true }
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      throw new Error("Không tìm thấy dòng để xóa");
+    }
+    
+    if (action === 'update') {
+      var rowIndex = getRowIndexById(sheetHoSo, idHoSo);
+      if (rowIndex > -1) {
+        var data = body.data || {};
+        var headers = sheetHoSo.getDataRange().getValues()[0];
+        var currentRow = sheetHoSo.getRange(rowIndex, 1, 1, headers.length).getValues()[0];
+        
+        for (var i = 0; i < headers.length; i++) {
+          var colName = headers[i];
+          if (data[colName] !== undefined && colName !== "ID_HoSo") {
+             currentRow[i] = data[colName];
+          }
+        }
+        
+        sheetHoSo.getRange(rowIndex, 1, 1, headers.length).setValues([currentRow]);
+        
+        var updatedObj = {};
+        for (var i = 0; i < headers.length; i++) {
+          updatedObj[headers[i]] = currentRow[i];
+        }
+        
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success", data: updatedObj
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      throw new Error("Không tìm thấy dòng để cập nhật");
+    }
+    
+    throw new Error("Action không hợp lệ cho POST.");
+  } catch(error) {
+     return ContentService.createTextOutput(JSON.stringify({
+      status: "error", message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 function doGet(e) {
   var action = e.parameter.action;
   var idHoSo = e.parameter.id;
@@ -105,4 +171,15 @@ function getAllData(sheet) {
     result.push(rowObject);
   }
   return result;
+}
+
+// Hàm phụ trợ lấy index dòng
+function getRowIndexById(sheet, id) {
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] == id) {
+      return i + 1;
+    }
+  }
+  return -1;
 }
