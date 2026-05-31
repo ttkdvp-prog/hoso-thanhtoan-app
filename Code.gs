@@ -121,6 +121,23 @@ function doGet(e) {
       dataHoSo["KhachHang"] = dataKhachHang || {};
     }
 
+    // TÌM CHI TIẾT HÓA ĐƠN TRONG BẢNG ChiTietHoaDon
+    var sheetChiTiet = ss.getSheetByName("ChiTietHoaDon");
+    if (sheetChiTiet) {
+      var allChiTiet = getAllData(sheetChiTiet);
+      var soHoaDonHoSo = dataHoSo["SoHoaDon"] || dataHoSo["Số hóa đơn"] || ""; 
+      var danhSachChiTiet = [];
+      
+      if (soHoaDonHoSo !== "") {
+        for (var i = 0; i < allChiTiet.length; i++) {
+          if (allChiTiet[i]["Số hóa đơn"] == soHoaDonHoSo || allChiTiet[i]["SoHoaDon"] == soHoaDonHoSo) {
+            danhSachChiTiet.push(allChiTiet[i]);
+          }
+        }
+      }
+      dataHoSo["ChiTietHoaDon"] = danhSachChiTiet;
+    }
+
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
       data: dataHoSo
