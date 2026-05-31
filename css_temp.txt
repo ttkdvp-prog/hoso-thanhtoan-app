@@ -1,0 +1,127 @@
+
+        @page {
+            size: A4;
+            margin: 20mm 15mm 20mm 30mm;
+        }
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 13pt;
+            line-height: 1.13;
+            text-align: justify;
+            color: #000;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        table { page-break-inside: avoid; break-inside: avoid; 
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10pt;
+        }
+        table.data-table, table.data-table th, table.data-table td {
+            border: 1px solid black;
+        }
+        td {
+            padding: 4px;
+            vertical-align: top;
+        }
+        p {
+            margin: 5pt 0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin: 5pt 0;
+            font-size: 13pt;
+            font-weight: bold;
+            font-family: inherit;
+        }
+        .page-break {
+            page-break-before: always; break-before: page; height: 1px;
+        }
+        /* Tắt viền bảng đối với các bảng dùng để dàn layout (chữ ký, tiêu đề) */
+        table.layout-table, table.layout-table td { text-align: center;
+            border: none !important;
+        }
+        @media screen {
+            body {
+                max-width: 210mm;
+                margin: 20px auto;
+                padding: 20mm;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+        }
+    
+        table.compact-table p {
+            margin: 1pt 0;
+        }
+        table.compact-table td {
+            padding: 2px;
+        }
+
+        .quoc-hieu {
+            text-align: center !important;
+            margin: 0 !important;
+        }
+        .quoc-hieu-1 {
+            font-size: 13pt;
+        }
+        .quoc-hieu-2 {
+            font-size: 14pt;
+            display: inline-block;
+            border-bottom: 1.5px solid black;
+            padding-bottom: 2px;
+            margin-bottom: 5pt;
+        }
+        .co-quan-1 {
+            text-align: center !important;
+            font-size: 13pt;
+            margin: 0 !important;
+        }
+        .co-quan-2 {
+            font-size: 13pt;
+            display: inline-block;
+            border-bottom: 1px solid black;
+            padding-bottom: 2px;
+            margin-bottom: 5pt;
+        }
+        .ngay-thang {
+            text-align: center !important;
+            margin: 0 !important;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { box-shadow: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+        }
+        .action-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .action-bar button {
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+        .action-bar button:hover {
+            background: #0056b3;
+        }
+        .action-bar button.pdf-btn { background: #dc3545; }
+        .action-bar button.pdf-btn:hover { background: #a71d2a; }
+        .action-bar button.doc-btn { background: #28a745; }
+        .action-bar button.doc-btn:hover { background: #1e7e34; }
+
+        .title-center {
+            text-align: center !important;
+            margin: 5pt 0 !important;
+        }
