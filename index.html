@@ -298,8 +298,15 @@
                         if (!isNaN(amount) && !flatData['BangChu']) {
                             flatData['BangChu'] = docTienBangChu(amount);
                         }
-                        // Format số tiền có chấm phân cách
-                        if (flatData['GiaTriSauThue']) flatData['GiaTriSauThue'] = amount.toLocaleString('vi-VN');
+                        // Format các số tiền có chấm phân cách
+                        ['GiaTriSauThue', 'GiaTriTruocThue', 'TienThue', 'GiaTri', 'Tổng tiền'].forEach(key => {
+                            if (flatData[key] !== undefined && flatData[key] !== null && flatData[key] !== '') {
+                                const num = Number(String(flatData[key]).replace(/[^0-9-]/g, ''));
+                                if (!isNaN(num)) {
+                                    flatData[key] = num.toLocaleString('vi-VN');
+                                }
+                            }
+                        });
                     }
 
                     // Tự động lấy dữ liệu từ AppSheet để điền vào tất cả các chỗ {...}
