@@ -346,10 +346,6 @@
                             return `${dd}/${mm}/${yyyy}`;
                         }
                         
-                        if (cleanKey === 'sohoadon' && val !== null && val !== '') {
-                            return String(val).padStart(8, '0');
-                        }
-                        
                         return val;
                     });
 
