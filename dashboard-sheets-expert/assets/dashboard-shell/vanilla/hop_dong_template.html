@@ -304,10 +304,10 @@
 
                     // Tự động lấy dữ liệu từ AppSheet để điền vào tất cả các chỗ {...}
                     content = content.replace(/\{([^{}]+)\}/g, function(match, key) {
-                        const cleanKey = key.trim().normalize("NFC").toLowerCase();
+                        const cleanKey = key.trim().normalize("NFC").replace(/\s+/g, '').toLowerCase();
                         let val;
-                        const actualKey = Object.keys(flatData).find(k => k.normalize("NFC").toLowerCase() === cleanKey);
-                        const actualKhachHangKey = Object.keys(flatData).find(k => k.normalize("NFC").toLowerCase() === ('khachhang.' + cleanKey));
+                        const actualKey = Object.keys(flatData).find(k => k.normalize("NFC").replace(/\s+/g, '').toLowerCase() === cleanKey);
+                        const actualKhachHangKey = Object.keys(flatData).find(k => k.normalize("NFC").replace(/\s+/g, '').toLowerCase() === ('khachhang.' + cleanKey));
                         
                         if (actualKey) {
                             val = flatData[actualKey];
