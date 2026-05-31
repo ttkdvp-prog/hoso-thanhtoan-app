@@ -326,6 +326,11 @@
                         return val;
                     });
 
+                                        // Chuyển đổi "ngày dd/mm/yyyy" thành "ngày d tháng m năm yyyy"
+                    content = content.replace(/ngày\s+(\d{1,2})\/(\d{1,2})\/(\d{4})/g, function(match, d, m, y) {
+                        return `ngày ${parseInt(d, 10)} tháng ${parseInt(m, 10)} năm ${y}`;
+                    });
+
                     document.getElementById('contract-content').innerHTML = content;
                     document.title = "In Hợp Đồng - " + id;
                     
