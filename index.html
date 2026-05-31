@@ -304,10 +304,11 @@
 
                     // Tự động lấy dữ liệu từ AppSheet để điền vào tất cả các chỗ {...}
                     content = content.replace(/\{([^{}]+)\}/g, function(match, key) {
-                        const cleanKey = key.trim().normalize("NFC").replace(/\s+/g, '').toLowerCase();
+                        const removeAccents = (str) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+                        const cleanKey = removeAccents(key.trim()).replace(/\s+/g, '').toLowerCase();
                         let val;
-                        const actualKey = Object.keys(flatData).find(k => k.normalize("NFC").replace(/\s+/g, '').toLowerCase() === cleanKey);
-                        const actualKhachHangKey = Object.keys(flatData).find(k => k.normalize("NFC").replace(/\s+/g, '').toLowerCase() === ('khachhang.' + cleanKey));
+                        const actualKey = Object.keys(flatData).find(k => removeAccents(k).replace(/\s+/g, '').toLowerCase() === cleanKey);
+                        const actualKhachHangKey = Object.keys(flatData).find(k => removeAccents(k).replace(/\s+/g, '').toLowerCase() === ('khachhang.' + cleanKey));
                         
                         if (actualKey) {
                             val = flatData[actualKey];
