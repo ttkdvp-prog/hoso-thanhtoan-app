@@ -104,3 +104,7 @@ Open only what the current task needs:
 - **Table Column Widths:** Never use CSS Grid functions like `minmax()` inside inline `style="width: ..."` on HTML `<th>` or `<td>` elements (standard `<table>`), as browsers will ignore it and crush the table layout. Use absolute pixels (e.g., `300px`) or percentages.
 
 - **Print Layouts vs Database:** Never treat Google Sheets as the final print layout if the form needs to be beautiful, stable, and professional (e.g., A4 admin contracts). Treat Google Sheets strictly as a database. Print templates must be rendered using HTML/CSS print (@media print, @page { size: A4 }) or a highly controlled, locked Sheet template to ensure formatting is never accidentally broken by data entry.
+
+- **Robust Template Variable Matching:** When building HTML print templates that replace `{VariableName}` with values from JSON or Google Sheets data, always implement robust matching. Normalize accents (`normalize("NFC")`), remove all spaces (`replace(/\s+/g, '')`), and convert to lowercase before matching keys. This prevents undefined variables caused by minor typos (e.g., "Ngày Hóa Đơn" vs "Ngày hóa đơn" vs "NgayGiaoNhan").
+
+- **Date Spelling:** Automatically handle Vietnamese date spelling. If a variable outputs a date in `dd/mm/yyyy` format and it is prefixed with the word `ngày`, automatically spell it out to `ngày dd tháng mm năm yyyy` via a secondary regex pass on the rendered HTML.
